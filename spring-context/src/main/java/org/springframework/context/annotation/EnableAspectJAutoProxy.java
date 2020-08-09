@@ -115,6 +115,11 @@ import java.lang.annotation.Target;
  * @author Juergen Hoeller
  * @since 3.1
  * @see org.aspectj.lang.annotation.Aspect
+ *
+ * EnableAspectJAutoProxy是组合注解，即，标注了EnableAspectJAutoProxy注解就相当于标注了元注解Import
+ * 该注解处理的入口也是
+ * @see ConfigurationClassPostProcessor
+ * @see ConfigurationClassParser-->doProcessConfigurationClass-->processImports
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

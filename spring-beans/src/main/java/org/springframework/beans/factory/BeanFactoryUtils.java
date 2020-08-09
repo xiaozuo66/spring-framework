@@ -238,6 +238,7 @@ public abstract class BeanFactoryUtils {
 	}
 
 	/**
+	 * 获取给定类型的所有bean所对应的名字，包括祖先BeanFactory，也就是循环查找的过程
 	 * Get all bean names for the given type, including those defined in ancestor
 	 * factories. Will return unique names in case of overridden bean definitions.
 	 * <p>Does consider objects created by FactoryBeans if the "allowEagerInit"
@@ -262,10 +263,12 @@ public abstract class BeanFactoryUtils {
 			ListableBeanFactory lbf, Class<?> type, boolean includeNonSingletons, boolean allowEagerInit) {
 
 		Assert.notNull(lbf, "ListableBeanFactory must not be null");
+		//根据类型依赖查找
 		String[] result = lbf.getBeanNamesForType(type, includeNonSingletons, allowEagerInit);
-		if (lbf instanceof HierarchicalBeanFactory) {
+		if (lbf instanceof HierarchicalBeanFactory) {//如果是层级BeanFactory
 			HierarchicalBeanFactory hbf = (HierarchicalBeanFactory) lbf;
-			if (hbf.getParentBeanFactory() instanceof ListableBeanFactory) {
+			if (hbf.getParentBeanFactory() instanceof ListableBeanFactory) {//父容器也是ListableBeanFactory
+				//迭代查找
 				String[] parentResult = beanNamesForTypeIncludingAncestors(
 						(ListableBeanFactory) hbf.getParentBeanFactory(), type, includeNonSingletons, allowEagerInit);
 				result = mergeNamesWithParent(result, parentResult, hbf);

@@ -63,6 +63,8 @@ public @interface ComponentScan {
 	 * <p>Allows for more concise annotation declarations if no other attributes
 	 * are needed &mdash; for example, {@code @ComponentScan("org.my.pkg")}
 	 * instead of {@code @ComponentScan(basePackages = "org.my.pkg")}.
+	 * AliasFor注解的实现方式类似于多态，能通过不同的注解指定相同的内容，具体用法参看
+	 * @see AliasFor
 	 */
 	@AliasFor("basePackages")
 	String[] value() default {};

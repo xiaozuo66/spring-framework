@@ -47,7 +47,7 @@ import org.springframework.util.StringUtils;
  * {@link #getSuperType() supertypes}, {@link #getInterfaces() interfaces}, and
  * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately
  * {@link #resolve() resolve} to a {@link java.lang.Class}.
- *
+ *obtained获得、得到
  * <p>{@code ResolvableTypes} may be obtained from {@link #forField(Field) fields},
  * {@link #forMethodParameter(Method, int) method parameters},
  * {@link #forMethodReturnType(Method) method returns} or
@@ -97,6 +97,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * The underlying Java type being managed.
+	 * 正在被管理的隐含的java类型
 	 */
 	private final Type type;
 
@@ -203,6 +204,7 @@ public class ResolvableType implements Serializable {
 	}
 
 	/**
+	 * the underlying底层
 	 * Return the underlying Java {@link Class} being managed, if available;
 	 * otherwise {@code null}.
 	 */
@@ -1076,6 +1078,7 @@ public class ResolvableType implements Serializable {
 
 	/**
 	 * Return a {@link ResolvableType} for the specified {@link Class} with pre-declared generics.
+	 * clazz.getTypeParameters() 通过class获取该类中泛型参数的名称，即<与 >中定义的名称
 	 * @param clazz the class (or interface) to introspect
 	 * @param generics the generics of the class
 	 * @return a {@link ResolvableType} for the specific class and generics

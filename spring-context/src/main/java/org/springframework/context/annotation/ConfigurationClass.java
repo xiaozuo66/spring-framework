@@ -45,6 +45,9 @@ import org.springframework.util.ClassUtils;
  * @since 3.0
  * @see BeanMethod
  * @see ConfigurationClassParser
+ *
+ * ConfigurationClass是对一个类的信息整合，包含的内容有类上注解的信息、读取类文件得到的Resource对象以及容器中对应的beanName,
+ * 在构造对象时，如果没有指定metadata类型，则使用StandardAnnotationMetadata。
  */
 final class ConfigurationClass {
 

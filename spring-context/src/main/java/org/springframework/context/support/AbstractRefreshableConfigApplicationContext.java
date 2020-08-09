@@ -35,6 +35,8 @@ import org.springframework.util.StringUtils;
  * @see #setConfigLocation
  * @see #setConfigLocations
  * @see #getDefaultConfigLocations
+ *
+ * 与所继承的抽象类AbstractRefreshableApplicationContext相比，加入了配置性的内容，主要是指configLocations（xml配置文件路径）
  */
 public abstract class AbstractRefreshableConfigApplicationContext extends AbstractRefreshableApplicationContext
 		implements BeanNameAware, InitializingBean {

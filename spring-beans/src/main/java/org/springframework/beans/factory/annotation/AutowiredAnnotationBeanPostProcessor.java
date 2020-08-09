@@ -69,6 +69,7 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
 /**
+ * 默认支持的注解：@Autowired、@Value、@Inject
  * {@link org.springframework.beans.factory.config.BeanPostProcessor BeanPostProcessor}
  * implementation that autowires annotated fields, setter methods, and arbitrary
  * config methods. Such members to be injected are detected through annotations:
@@ -107,6 +108,8 @@ import org.springframework.util.StringUtils;
  * Remove or turn off the default annotation configuration there if you intend
  * to specify a custom {@code AutowiredAnnotationBeanPostProcessor} bean definition.
  *
+ * 注解注入先于XML注入
+ *
  * <p><b>NOTE:</b> Annotation injection will be performed <i>before</i> XML injection;
  * thus the latter configuration will override the former for properties wired through
  * both approaches.
@@ -127,6 +130,8 @@ import org.springframework.util.StringUtils;
  * @see #setAutowiredAnnotationType
  * @see Autowired
  * @see Value
+ *
+ * autowired注解后置处理器。在字段、方法等元素上标注autowired的注解后，会被该处理器扫描到进行赋值
  */
 public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationAwareBeanPostProcessor,
 		MergedBeanDefinitionPostProcessor, PriorityOrdered, BeanFactoryAware {
@@ -294,9 +299,11 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 
 		// Quick check on the concurrent map first, with minimal locking.
 		Constructor<?>[] candidateConstructors = this.candidateConstructorsCache.get(beanClass);
+		//解析之后会缓存下来，保证一个类只需要解析一次
 		if (candidateConstructors == null) {
 			// Fully synchronized resolution now...
 			synchronized (this.candidateConstructorsCache) {
+				//锁定之后，再次判断是否已存在，，逻辑严谨
 				candidateConstructors = this.candidateConstructorsCache.get(beanClass);
 				if (candidateConstructors == null) {
 					Constructor<?>[] rawCandidates;
@@ -637,6 +644,12 @@ public class AutowiredAnnotationBeanPostProcessor implements SmartInstantiationA
 				Assert.state(beanFactory != null, "No BeanFactory available");
 				TypeConverter typeConverter = beanFactory.getTypeConverter();
 				try {
+					/**
+					 * desc 是要注入信息，这里是字段
+					 * beanName 外层容器bean所对应的名字
+					 * autowiredBeanNames 存放要被注入的bean的名字
+					 * typConverter类型转换器
+					 */
 					value = beanFactory.resolveDependency(desc, beanName, autowiredBeanNames, typeConverter);
 				}
 				catch (BeansException ex) {

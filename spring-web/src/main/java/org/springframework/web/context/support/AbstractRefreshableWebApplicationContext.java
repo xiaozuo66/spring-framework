@@ -77,6 +77,9 @@ import org.springframework.web.context.ServletContextAware;
  * @see org.springframework.web.context.ConfigurableWebApplicationContext#setConfigLocations
  * @see org.springframework.ui.context.ThemeSource
  * @see XmlWebApplicationContext
+ *
+ * 与所继承的抽象类AbstractRefreshableConfigApplicationContext相比，加入了web项目的一些属性
+ * 比如：servletContext、servletConfig
  */
 public abstract class AbstractRefreshableWebApplicationContext extends AbstractRefreshableConfigApplicationContext
 		implements ConfigurableWebApplicationContext, ThemeSource {

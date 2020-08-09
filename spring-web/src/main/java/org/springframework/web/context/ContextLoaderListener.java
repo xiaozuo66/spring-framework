@@ -41,9 +41,11 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * context based on the "contextClass" and "contextConfigLocation" servlet
 	 * context-params. See {@link ContextLoader} superclass documentation for details on
 	 * default values for each.
+	 * 在web.xml文件中配置监听器ContextLoaderListener
 	 * <p>This constructor is typically used when declaring {@code ContextLoaderListener}
 	 * as a {@code <listener>} within {@code web.xml}, where a no-arg constructor is
 	 * required.
+	 * 被创建的上下文将被注册到servletContext中，作为上下文的属性，属性名是ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE对应的值
 	 * <p>The created application context will be registered into the ServletContext under
 	 * the attribute name {@link WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE}
 	 * and the Spring application context will be closed when the {@link #contextDestroyed}
@@ -89,6 +91,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * @param context the application context to manage
 	 * @see #contextInitialized(ServletContextEvent)
 	 * @see #contextDestroyed(ServletContextEvent)
+	 * 先通过构造方法初始化一个对象，然后才会触发监听器的初始化方法，但是目前估计使用的是无参构造器，待验证
 	 */
 	public ContextLoaderListener(WebApplicationContext context) {
 		super(context);
@@ -97,6 +100,10 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 
 	/**
 	 * Initialize the root web application context.
+	 * 启动时初始化上下文容器入口方法
+	 * 接收一个event
+	 * @link ServletContextListener
+	 * 接口的方法
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
@@ -106,6 +113,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 
 	/**
 	 * Close the root web application context.
+	 * 关闭服务时关闭上下文
 	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent event) {

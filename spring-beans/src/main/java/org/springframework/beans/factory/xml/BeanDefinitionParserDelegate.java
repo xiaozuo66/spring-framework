@@ -709,6 +709,7 @@ public class BeanDefinitionParserDelegate {
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
 			if (isCandidateElement(node) && nodeNameEquals(node, PROPERTY_ELEMENT)) {
+				//循环处理，不管配置多少property元素，都放置在propertyValues属性中
 				parsePropertyElement((Element) node, bd);
 			}
 		}
@@ -861,6 +862,14 @@ public class BeanDefinitionParserDelegate {
 
 	/**
 	 * Parse a qualifier element.
+	 * XML文件配置beanDifinition的时候也可以指定Qualifier(type+value)
+	 * 配置样例如下：
+	 * <bean id="hello" class="com.joe.Hello">
+	 *     <qualifier type="org.Springframework.beans.factory.annotation.Qualifier" value="qf">
+	 *         <attribute key="abc" value="123"></attribute>
+	 *         <attribute key="ABC" value="456"></attribute>
+	 *     </qualifier>
+	 * </bean>
 	 */
 	public void parseQualifierElement(Element ele, AbstractBeanDefinition bd) {
 		String typeName = ele.getAttribute(TYPE_ATTRIBUTE);
@@ -870,12 +879,15 @@ public class BeanDefinitionParserDelegate {
 		}
 		this.parseState.push(new QualifierEntry(typeName));
 		try {
+			//创建一个Qualifier容器，把限定的类型传进去
 			AutowireCandidateQualifier qualifier = new AutowireCandidateQualifier(typeName);
 			qualifier.setSource(extractSource(ele));
 			String value = ele.getAttribute(VALUE_ATTRIBUTE);
 			if (StringUtils.hasLength(value)) {
+				//将配置的value属性值设置到Qualifier容器中，这里虽然是set,但是内部实际上是进行map的put操作
 				qualifier.setAttribute(AutowireCandidateQualifier.VALUE_KEY, value);
 			}
+			//还可以配置子节点，见方法说明
 			NodeList nl = ele.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
 				Node node = nl.item(i);
@@ -894,6 +906,7 @@ public class BeanDefinitionParserDelegate {
 					}
 				}
 			}
+			//将Qualifier对象设置到BeanDifinition中
 			bd.addQualifier(qualifier);
 		}
 		finally {
@@ -930,6 +943,7 @@ public class BeanDefinitionParserDelegate {
 
 		boolean hasRefAttribute = ele.hasAttribute(REF_ATTRIBUTE);
 		boolean hasValueAttribute = ele.hasAttribute(VALUE_ATTRIBUTE);
+		//如果同时配置了value和ref则加以提示，并只对ref内容进行解析
 		if ((hasRefAttribute && hasValueAttribute) ||
 				((hasRefAttribute || hasValueAttribute) && subElement != null)) {
 			error(elementName +

@@ -21,7 +21,9 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.lang.Nullable;
 
-/**
+/**策略接口
+ * qualifies 有资格的、合法的
+ * 决定一个beanDefinition是否有资格作为指定依赖的候选者
  * Strategy interface for determining whether a specific bean definition
  * qualifies as an autowire candidate for a specific dependency.
  *

@@ -46,7 +46,7 @@ import org.springframework.lang.Nullable;
  * Consider using the {@link GenericApplicationContext} class in combination
  * with an {@link org.springframework.beans.factory.xml.XmlBeanDefinitionReader}
  * for more flexible context setup.</b>
- *
+ * 主要是 通过文件路径指定xml配置文件
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see #getResource

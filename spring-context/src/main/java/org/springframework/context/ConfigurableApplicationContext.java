@@ -35,11 +35,13 @@ import org.springframework.lang.Nullable;
  * <p>Configuration and lifecycle methods are encapsulated here to avoid
  * making them obvious to ApplicationContext client code. The present
  * methods should only be used by startup and shutdown code.
- *
+ *可配置的上下文，定义一些常量，用来当作特定bean的name
  * @author Juergen Hoeller
  * @author Chris Beams
  * @author Sam Brannen
  * @since 03.11.2003
+ *
+ * 可配置的ApplicationContext，可配置内容包括conversionService、loadTimeWeaver、environment等
  */
 public interface ConfigurableApplicationContext extends ApplicationContext, Lifecycle, Closeable {
 

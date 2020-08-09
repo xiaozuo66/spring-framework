@@ -234,6 +234,8 @@ public class AnnotatedBeanDefinitionReader {
 	}
 
 	/**
+	 * deriving提取
+	 * 将指定class注册为一个bean,并从类生成的注解中提取元数据
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param beanClass the class of the bean
@@ -260,7 +262,10 @@ public class AnnotatedBeanDefinitionReader {
 		abd.setScope(scopeMetadata.getScopeName());
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
+		//在utils方法中读取注解并得到对应值赋给beanDefinition，注解包括Lazy、Primary、DependsOn、Role、Description
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+
+		//如果存在限定符，对限定符进行处理，这里限定符是不是仅支持Primary、Lazy、Qualifier？
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {

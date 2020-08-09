@@ -412,9 +412,11 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	//根据包名进行扫描处理，此处返回beanDefinition是为了对里面的beanDefinition进行迭代处理(因为可能也包含CompenentScan等注解)
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
+			//解析出来的格式是：classpath*:com/cmbc/test/**/*.class
 			String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX +
 					resolveBasePackage(basePackage) + '/' + this.resourcePattern;
 			Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
@@ -428,6 +430,8 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 					try {
 						MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
 						if (isCandidateComponent(metadataReader)) {
+							//ScannedGenericBeanDefinition继承了GenericBeanDefinition并实现了AnnotatedBeanDefinition
+							//说明：注解类型的beanDefinition包含AnnotationMetadata,普通的BeanDifinition无注解信息
 							ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 							sbd.setSource(resource);
 							if (isCandidateComponent(sbd)) {
@@ -474,6 +478,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	 * and converts a "."-based package path to a "/"-based resource path.
 	 * @param basePackage the base package as specified by the user
 	 * @return the pattern specification to be used for package searching
+	 * 实现包路径的转换,将.修改为/
 	 */
 	protected String resolveBasePackage(String basePackage) {
 		return ClassUtils.convertClassNameToResourcePath(getEnvironment().resolveRequiredPlaceholders(basePackage));

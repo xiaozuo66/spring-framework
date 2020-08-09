@@ -37,9 +37,11 @@ import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ServletContextAware;
 
 /**
+ * 适用web环境的子类，
  * Subclass of {@link GenericApplicationContext}, suitable for web environments.
  *
  * <p>Implements {@link org.springframework.web.context.ConfigurableWebApplicationContext},
+ * 不用于在web.xml中声明，相反的，它被设计用来通过程序化设置（代码设置）
  * but is not intended for declarative setup in {@code web.xml}. Instead, it is designed
  * for programmatic setup, for example for building nested contexts or for use within
  * {@link org.springframework.web.WebApplicationInitializer WebApplicationInitializers}.

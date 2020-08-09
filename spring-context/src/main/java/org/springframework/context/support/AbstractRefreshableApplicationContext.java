@@ -26,9 +26,11 @@ import org.springframework.context.ApplicationContextException;
 import org.springframework.lang.Nullable;
 
 /**
+ * 这是对ApplicationContext的一个基础实现，支持多次调用refresh方法，每次调用都可以产生一个新的内部beanFactory
  * Base class for {@link org.springframework.context.ApplicationContext}
  * implementations which are supposed to support multiple calls to {@link #refresh()},
  * creating a new internal bean factory instance every time.
+ * 通常来说（但不是必须的），这种上下文通过一个xml配置集合来加载一些bean的定义
  * Typically (but not necessarily), such a context will be driven by
  * a set of config locations to load bean definitions from.
  *
@@ -71,6 +73,8 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	private Boolean allowCircularReferences;
 
 	/** Bean factory for this context. */
+	//是不是可以理解成，applicationContext是应用上下文，上下文可能包含很多内容，而其中之一就是beanFactory，
+	// 而默认的beanFactory就是DefaultListableBeanFactory
 	@Nullable
 	private volatile DefaultListableBeanFactory beanFactory;
 
@@ -113,12 +117,16 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 
 
 	/**
+	 * underlying潜在的
+	 * phase阶段
+	 * 该方法是刷新上下文内部的beanFactor：关闭之前任何的beanFactory并为上下文生命周期做下一个阶段的初始化
 	 * This implementation performs an actual refresh of this context's underlying
 	 * bean factory, shutting down the previous bean factory (if any) and
 	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
 	 */
 	@Override
 	protected final void refreshBeanFactory() throws BeansException {
+		//已经存在则先销毁或关闭，判断是否已经存在是根据成员变量beanFactory是否为空
 		if (hasBeanFactory()) {
 			destroyBeans();
 			closeBeanFactory();
@@ -126,6 +134,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 		try {
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
+			//设置一些参数：是否允许bean的覆盖、是否允许循环引用等。
 			customizeBeanFactory(beanFactory);
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
@@ -194,6 +203,9 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	 * @see org.springframework.beans.factory.support.DefaultListableBeanFactory#setAllowRawInjectionDespiteWrapping
 	 */
 	protected DefaultListableBeanFactory createBeanFactory() {
+		//特别说明parent的理解：parent分为两种，一种是ApplicationContext，ApplicationContext中会包含parent,这个parent指的也是ApplicationContext;
+		//第二种是BeanFactory,在BeanFactory中也包含parent,而这个parent指的则是BeanFactory;
+		//最终，ApplicationContext中parent所表示的ApplicationContext中的BeanFactory会赋值给BeanFactory中的parentBeanFactory
 		return new DefaultListableBeanFactory(getInternalParentBeanFactory());
 	}
 

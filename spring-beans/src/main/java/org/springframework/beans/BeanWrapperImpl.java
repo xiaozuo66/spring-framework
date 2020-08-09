@@ -309,6 +309,14 @@ public class BeanWrapperImpl extends AbstractNestablePropertyAccessor implements
 			}
 		}
 
+		/**
+		 * 读取到xml等配置的属性值以后，赋值给对应最终是在这个方法中实现的.
+		 * 该方法在PropertyHandler类中声明.
+		 * PropertyHandler（protected  内部类）作为内部类定义在AbstractNestablePropertyAccessor中.
+		 * BeanWrapperImpl继承自AbstractNestablePropertyAccessor.
+		 * BeanPropertyHandler继承了PropertyHandler，同样是内部类.
+		 * 思考：为什么定义成内部类？.
+		 */
 		@Override
 		public void setValue(@Nullable Object value) throws Exception {
 			Method writeMethod = (this.pd instanceof GenericTypeAwarePropertyDescriptor ?

@@ -32,7 +32,7 @@ import org.springframework.util.MultiValueMap;
  * Defines access to the annotations of a specific type ({@link AnnotationMetadata class}
  * or {@link MethodMetadata method}), in a form that does not necessarily require the
  * class-loading.
- *
+ *需要从底层接口了解功能，了解对应接口有什么功能、能做什么、解决了什么问题等。
  * @author Juergen Hoeller
  * @author Mark Fisher
  * @author Mark Pollack

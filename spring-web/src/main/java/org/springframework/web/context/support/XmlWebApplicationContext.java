@@ -58,6 +58,17 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
  * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
  * @see org.springframework.web.context.ContextLoader#initWebApplicationContext
  * @see org.springframework.web.servlet.FrameworkServlet#initWebApplicationContext
+ *
+ * 理解构造器执行：
+ * * 1.有子父类继承关系的类中，创建父类对象未调用，执行父类无参构造
+ * * 2.有子父类继承关系的类中，创建子类对象未调用，执行顺序：默认先调用 父类无参构造---子类无参构造
+ * * 在子类的构造方法的第一行代码如果没有调用父类的构造或者没有调用子类的其他构造，则默认调用父类无参构造
+ * *
+ * * * 为什么要调用父类构造？
+ *  *           因为需要给父类的成员变量初始化
+ *  * 肯定会先把父类的构造执行完毕，在去执行子类构造中的其他代码
+ *  *
+ *	理解构造器执行的目的是说明，在contextLoader中创建XmlWebApplicationContext对象的同时，其所继承的抽象类也会执行对应的构造方法进行参数的初始化
  */
 public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationContext {
 
@@ -76,6 +87,9 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader
 	 * @see #initBeanDefinitionReader
 	 * @see #loadBeanDefinitions
+	 *
+	 * 在最终的处理类中覆写加载方法。与AbstractXmlApplicationContext中的实现一致
+	 * AbstractXmlApplicationContext 不是web项目使用的，而是通过文件系统和class路径加载用的：FileSystemXmlApplicationContext、ClassPathXmlApplicationContext
 	 */
 	@Override
 	protected void loadBeanDefinitions(DefaultListableBeanFactory beanFactory) throws BeansException, IOException {

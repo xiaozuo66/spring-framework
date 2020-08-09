@@ -20,7 +20,8 @@ import org.springframework.lang.Nullable;
 
 /**
  * Any object can implement this interface to provide its actual {@link ResolvableType}.
- *
+ *figuring out弄清楚
+ * convey传递 表达
  * <p>Such information is very useful when figuring out if the instance matches a generic
  * signature as Java does not convey the signature at runtime.
  *

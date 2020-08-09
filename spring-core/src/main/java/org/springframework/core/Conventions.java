@@ -245,6 +245,7 @@ public final class Conventions {
 	}
 
 	/**
+	 * enclosingClass  封装类
 	 * Return an attribute name qualified by the given enclosing {@link Class}.
 	 * For example the attribute name '{@code foo}' qualified by {@link Class}
 	 * '{@code com.myapp.SomeClass}' would be '{@code com.myapp.SomeClass.foo}'

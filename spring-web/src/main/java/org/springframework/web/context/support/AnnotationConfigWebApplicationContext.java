@@ -34,6 +34,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.context.ContextLoader;
 
 /**
+ *
+ * in particular尤其、特别
  * {@link org.springframework.web.context.WebApplicationContext WebApplicationContext}
  * implementation which accepts <em>component classes</em> as input &mdash; in particular
  * {@link org.springframework.context.annotation.Configuration @Configuration}-annotated
